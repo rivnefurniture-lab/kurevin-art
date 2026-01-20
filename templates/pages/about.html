@@ -13,7 +13,7 @@
     <div class="container">
         <div class="about-content">
             <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80" alt="Artist at work">
+                <img src="https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80" alt="Alexey Kurevin">
             </div>
             <div class="about-text">
                 {% if lang == 'uk' %}
@@ -37,17 +37,38 @@
     </div>
 </section>
 
+<!-- Artist Quote -->
+<section class="section" style="background: var(--sea-deep); color: var(--canvas-white); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 20px; left: 40px; font-size: 120px; color: var(--sea-medium); opacity: 0.1; font-family: var(--font-display); line-height: 1;">"</div>
+    <div style="position: absolute; bottom: 20px; right: 40px; font-size: 120px; color: var(--sea-medium); opacity: 0.1; font-family: var(--font-display); line-height: 1;">"</div>
+    <div class="container container-narrow text-center" style="position: relative; z-index: 1;">
+        {% if lang == 'uk' %}
+        <p style="font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); line-height: 1.6; font-style: italic; color: var(--sea-foam); margin-bottom: var(--space-lg);">
+            Імпресіонізм для мене — це спосіб передати не просто те, що бачу, а те, що відчуваю. Кожен мазок — це емоція, кожен колір — настрій моменту.
+        </p>
+        <p style="color: var(--sea-light); font-size: 0.9375rem; letter-spacing: 0.1em;">— Олексій Куревін</p>
+        {% elif lang == 'en' %}
+        <p style="font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); line-height: 1.6; font-style: italic; color: var(--sea-foam); margin-bottom: var(--space-lg);">
+            Impressionism for me is a way to convey not just what I see, but what I feel. Every brushstroke is an emotion, every color is the mood of the moment.
+        </p>
+        <p style="color: var(--sea-light); font-size: 0.9375rem; letter-spacing: 0.1em;">— Alexey Kurevin</p>
+        {% else %}
+        <p style="font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); line-height: 1.6; font-style: italic; color: var(--sea-foam); margin-bottom: var(--space-lg);">
+            Импрессионизм для меня — это способ передать не просто то, что вижу, а то, что чувствую. Каждый мазок — это эмоция, каждый цвет — настроение момента.
+        </p>
+        <p style="color: var(--sea-light); font-size: 0.9375rem; letter-spacing: 0.1em;">— Алексей Куревин</p>
+        {% endif %}
+    </div>
+</section>
+
 <section class="section" style="background: var(--canvas-cream);">
     <div class="container container-narrow text-center">
         {% if lang == 'uk' %}
         <h2>Творчий шлях</h2>
-        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Імпресіонізм для мене — це спосіб передати не просто те, що бачу, а те, що відчуваю. Кожен мазок — це емоція, кожен колір — настрій моменту.</p>
         {% elif lang == 'en' %}
         <h2>Creative Path</h2>
-        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Impressionism for me is a way to convey not just what I see, but what I feel. Every brushstroke is an emotion, every color is the mood of the moment.</p>
         {% else %}
         <h2>Творческий путь</h2>
-        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Импрессионизм для меня — это способ передать не просто то, что вижу, а то, что чувствую. Каждый мазок — это эмоция, каждый цвет — настроение момента.</p>
         {% endif %}
         
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); margin-top: var(--space-2xl);">

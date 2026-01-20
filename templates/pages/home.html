@@ -68,11 +68,15 @@
 {% endif %}
 
 <!-- About Preview -->
-<section class="section">
-    <div class="container">
+<section class="section" style="position: relative; overflow: hidden;">
+    <!-- Decorative elements -->
+    <div style="position: absolute; top: 10%; right: 5%; width: 200px; height: 200px; border: 2px solid var(--sea-light); border-radius: 50%; opacity: 0.15;"></div>
+    <div style="position: absolute; bottom: 15%; left: 8%; width: 100px; height: 100px; background: var(--sun-gold); opacity: 0.08; border-radius: 50%;"></div>
+    
+    <div class="container" style="position: relative; z-index: 1;">
         <div class="about-content">
             <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80" alt="Artist studio">
+                <img src="https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80" alt="Alexey Kurevin">
             </div>
             <div class="about-text">
                 <h2>{{ t.about_title }}</h2>

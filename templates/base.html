@@ -6,6 +6,10 @@
     <title>{% block title %}{{ t.site_title }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{{ t.site_title }} - {{ t.hero_subtitle }}{% endblock %}">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

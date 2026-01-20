@@ -65,6 +65,9 @@ body {
     line-height: 1.7;
     color: var(--ink-dark);
     background: var(--canvas-white);
+    background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(26, 58, 74, 0.01) 2px, rgba(26, 58, 74, 0.01) 4px),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(26, 58, 74, 0.01) 2px, rgba(26, 58, 74, 0.01) 4px);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -342,6 +345,26 @@ p {
     pointer-events: none;
 }
 
+/* Decorative brush strokes */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(74, 143, 168, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+}
+
 .hero-content {
     text-align: center;
     position: relative;
@@ -378,7 +401,36 @@ p {
     right: 0;
     height: 150px;
     background: var(--canvas-white);
-    clip-path: ellipse(70% 100% at 50% 100%);
+    clip-path: polygon(
+        0% 30%, 
+        10% 25%, 
+        20% 35%, 
+        30% 20%, 
+        40% 30%, 
+        50% 15%, 
+        60% 25%, 
+        70% 20%, 
+        80% 30%, 
+        90% 25%, 
+        100% 35%, 
+        100% 100%, 
+        0% 100%
+    );
+}
+
+/* Decorative elements */
+.decorative-circle {
+    position: absolute;
+    border: 2px solid var(--sea-light);
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+.decorative-line {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sea-light), transparent);
+    opacity: 0.2;
 }
 
 /* ============== BUTTONS ============== */
@@ -475,11 +527,29 @@ p {
     position: relative;
     background: var(--canvas-white);
     overflow: hidden;
-    transition: transform var(--transition-normal);
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(26, 58, 74, 0.08);
+}
+
+.painting-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sea-light), var(--sun-gold), var(--sea-light));
+    opacity: 0;
+    transition: opacity var(--transition-normal);
 }
 
 .painting-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(26, 58, 74, 0.15);
+}
+
+.painting-card:hover::before {
+    opacity: 1;
 }
 
 .painting-card-image {
@@ -670,8 +740,22 @@ p {
     left: var(--space-xl);
     right: calc(var(--space-xl) * -1);
     bottom: calc(var(--space-xl) * -1);
-    border: 1px solid var(--sea-light);
+    border: 2px solid var(--sea-light);
     z-index: -1;
+    background: linear-gradient(135deg, rgba(123, 196, 212, 0.05), rgba(212, 165, 116, 0.05));
+}
+
+.about-image::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 80px;
+    height: 80px;
+    background: var(--sun-gold);
+    opacity: 0.2;
+    border-radius: 50%;
+    z-index: -2;
 }
 
 .about-text h2 {
@@ -991,6 +1075,27 @@ textarea.form-control {
 
 .featured-section {
     background: var(--canvas-cream);
+    position: relative;
+}
+
+.featured-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sea-light), transparent);
+    opacity: 0.3;
+}
+
+.section-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sea-medium), var(--sun-gold));
+    margin: var(--space-lg) auto 0;
 }
 
 /* ============== UTILITIES ============== */

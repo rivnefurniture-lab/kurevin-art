@@ -1,0 +1,153 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Редагувати' if painting else 'Додати' }} картину - Студія{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1 class="admin-title">{{ 'Редагувати картину' if painting else 'Додати картину' }}</h1>
+    <a href="{{ url_for('admin_paintings') }}" class="btn btn-ghost">← Назад до списку</a>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-xl);">
+        <div>
+            <!-- Titles -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Назви</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Назва (Українська) *</label>
+                    <input type="text" name="title_uk" class="form-control" value="{{ painting.title_uk if painting else '' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Title (English) *</label>
+                    <input type="text" name="title_en" class="form-control" value="{{ painting.title_en if painting else '' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Название (Русский) *</label>
+                    <input type="text" name="title_ru" class="form-control" value="{{ painting.title_ru if painting else '' }}" required>
+                </div>
+            </div>
+            
+            <!-- Descriptions -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Описи (необов'язково)</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Опис (Українська)</label>
+                    <textarea name="description_uk" class="form-control" rows="3">{{ painting.description_uk if painting else '' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description (English)</label>
+                    <textarea name="description_en" class="form-control" rows="3">{{ painting.description_en if painting else '' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Описание (Русский)</label>
+                    <textarea name="description_ru" class="form-control" rows="3">{{ painting.description_ru if painting else '' }}</textarea>
+                </div>
+            </div>
+            
+            <!-- Technique -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Техніка</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md);">
+                    <div class="form-group">
+                        <label class="form-label">Техніка (УКР)</label>
+                        <input type="text" name="technique_uk" class="form-control" value="{{ painting.technique_uk if painting else 'Олія на полотні' }}" placeholder="Олія на полотні">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Technique (EN)</label>
+                        <input type="text" name="technique_en" class="form-control" value="{{ painting.technique_en if painting else 'Oil on canvas' }}" placeholder="Oil on canvas">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Техника (РУ)</label>
+                        <input type="text" name="technique_ru" class="form-control" value="{{ painting.technique_ru if painting else 'Масло на холсте' }}" placeholder="Масло на холсте">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <!-- Image -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Зображення</h2>
+                
+                {% if painting and painting.image %}
+                <div style="margin-bottom: var(--space-lg);">
+                    <img src="{{ url_for('static', filename='images/paintings/' + painting.image) }}" alt="{{ painting.title_uk }}" style="width: 100%;">
+                </div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label class="form-label">{{ 'Замінити зображення' if painting and painting.image else 'Завантажити зображення' }}</label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                </div>
+            </div>
+            
+            <!-- Details -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Деталі</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+                    <div class="form-group">
+                        <label class="form-label">Ширина (см)</label>
+                        <input type="number" name="width" class="form-control" value="{{ painting.width if painting else '' }}" placeholder="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Висота (см)</label>
+                        <input type="number" name="height" class="form-control" value="{{ painting.height if painting else '' }}" placeholder="70">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Рік написання</label>
+                    <input type="number" name="year" class="form-control" value="{{ painting.year if painting else '' }}" placeholder="2024">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ціна (USD)</label>
+                    <input type="number" name="price" class="form-control" value="{{ painting.price|int if painting and painting.price else '' }}" placeholder="1500">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Порядок сортування</label>
+                    <input type="number" name="order" class="form-control" value="{{ painting.order if painting else 0 }}" placeholder="0">
+                    <small style="color: var(--ink-light);">Менше число = вище в списку</small>
+                </div>
+            </div>
+            
+            <!-- Status -->
+            <div class="admin-card">
+                <h2 class="admin-card-title">Статус</h2>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                        <input type="checkbox" name="is_sold" {% if painting and painting.is_sold %}checked{% endif %}>
+                        <span>Продано</span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                        <input type="checkbox" name="is_featured" {% if painting and painting.is_featured %}checked{% endif %}>
+                        <span>Показувати на головній (Featured)</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                {{ 'Зберегти зміни' if painting else 'Додати картину' }}
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}

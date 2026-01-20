@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">{{ t.site_title }}</h1>
+        <p class="hero-subtitle">{{ t.hero_subtitle }}</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('gallery') }}" class="btn btn-primary btn-lg">{{ t.view_gallery }}</a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline btn-lg">{{ t.contact_artist }}</a>
+        </div>
+    </div>
+    <div class="hero-wave"></div>
+</section>
+
+<!-- Featured Works -->
+{% if paintings %}
+<section class="section featured-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>{{ t.featured_works }}</h2>
+        </div>
+        
+        <div class="gallery-grid">
+            {% for painting in paintings %}
+            <article class="painting-card">
+                <a href="{{ url_for('painting_detail', painting_id=painting.id) }}">
+                    <div class="painting-card-image">
+                        {% if painting.image %}
+                        <img src="{{ url_for('static', filename='images/paintings/' + painting.image) }}" alt="{{ painting.get_title(lang) }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80" alt="{{ painting.get_title(lang) }}">
+                        {% endif %}
+                        <div class="painting-card-overlay">
+                            <span class="btn btn-outline" style="color: white; border-color: white;">{{ t.inquire }}</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="painting-card-body">
+                    <h3 class="painting-card-title">
+                        <a href="{{ url_for('painting_detail', painting_id=painting.id) }}">{{ painting.get_title(lang) }}</a>
+                    </h3>
+                    <div class="painting-card-meta">
+                        {% if painting.get_size_display() %}
+                        <span>{{ painting.get_size_display() }}</span>
+                        {% endif %}
+                        {% if painting.year %}
+                        <span>{{ painting.year }}</span>
+                        {% endif %}
+                    </div>
+                    {% if painting.price and not painting.is_sold %}
+                    <div class="painting-card-price">${{ painting.price|int }}</div>
+                    {% endif %}
+                    {% if painting.is_sold %}
+                    <span class="painting-card-status status-sold">{{ t.sold }}</span>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('gallery') }}" class="btn btn-outline">{{ t.all_works }}</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- About Preview -->
+<section class="section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80" alt="Artist studio">
+            </div>
+            <div class="about-text">
+                <h2>{{ t.about_title }}</h2>
+                {% if lang == 'uk' %}
+                <p>Олексій Куревін — український художник-імпресіоніст, чиї роботи наповнені світлом, кольором та емоціями Одеси та Чорноморського узбережжя.</p>
+                <p>Кожна картина — це мить, схоплена пензлем. Сонячні вулиці, морські пейзажі, квітучі сади — все це оживає на полотнах художника.</p>
+                {% elif lang == 'en' %}
+                <p>Alexey Kurevin is a Ukrainian impressionist artist whose works are filled with the light, color, and emotions of Odessa and the Black Sea coast.</p>
+                <p>Each painting is a moment captured by brush. Sunny streets, seascapes, blooming gardens — all come alive on the artist's canvases.</p>
+                {% else %}
+                <p>Алексей Куревин — украинский художник-импрессионист, чьи работы наполнены светом, цветом и эмоциями Одессы и Черноморского побережья.</p>
+                <p>Каждая картина — это миг, схваченный кистью. Солнечные улицы, морские пейзажи, цветущие сады — всё это оживает на полотнах художника.</p>
+                {% endif %}
+                <a href="{{ url_for('about') }}" class="btn btn-ghost mt-3">{{ t.nav_about }}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="section" style="background: var(--sea-deep); color: var(--canvas-white); text-align: center;">
+    <div class="container container-narrow">
+        <h2 style="color: var(--canvas-white); margin-bottom: var(--space-lg);">{{ t.contact_title }}</h2>
+        <p style="color: var(--sea-foam); margin-bottom: var(--space-xl);">{{ t.contact_subtitle }}</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline" style="color: white; border-color: white;">{{ t.contact_artist }}</a>
+    </div>
+</section>
+{% endblock %}

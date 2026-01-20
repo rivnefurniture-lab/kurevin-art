@@ -1,0 +1,77 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Дашборд - Студія{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1 class="admin-title">Дашборд</h1>
+</div>
+
+<div class="admin-stats">
+    <div class="admin-stat">
+        <div class="admin-stat-number">{{ paintings_count }}</div>
+        <div class="admin-stat-label">Всього картин</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-number">{{ available_count }}</div>
+        <div class="admin-stat-label">Доступні</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-number">{{ sold_count }}</div>
+        <div class="admin-stat-label">Продані</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-number">{{ messages_count }}</div>
+        <div class="admin-stat-label">Нових повідомлень</div>
+    </div>
+</div>
+
+<div class="admin-card">
+    <h2 class="admin-card-title">Останні повідомлення</h2>
+    
+    {% if recent_messages %}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <th>Картина</th>
+                <th>Дата</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in recent_messages %}
+            <tr>
+                <td>{{ msg.name }}</td>
+                <td>{{ msg.email }}</td>
+                <td>{{ msg.painting.title_uk if msg.painting else '—' }}</td>
+                <td>{{ msg.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>
+                    {% if msg.is_read %}
+                    <span class="badge badge-success">Прочитано</span>
+                    {% else %}
+                    <span class="badge badge-warning">Нове</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="margin-top: var(--space-lg);">
+        <a href="{{ url_for('admin_messages') }}" class="btn btn-ghost">Всі повідомлення →</a>
+    </div>
+    {% else %}
+    <p style="color: var(--ink-light);">Поки немає повідомлень</p>
+    {% endif %}
+</div>
+
+<div class="admin-card">
+    <h2 class="admin-card-title">Швидкі дії</h2>
+    <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
+        <a href="{{ url_for('admin_add_painting') }}" class="btn btn-primary">Додати картину</a>
+        <a href="{{ url_for('admin_paintings') }}" class="btn btn-outline">Керувати галереєю</a>
+        <a href="{{ url_for('home') }}" target="_blank" class="btn btn-ghost">Переглянути сайт</a>
+    </div>
+</div>
+{% endblock %}

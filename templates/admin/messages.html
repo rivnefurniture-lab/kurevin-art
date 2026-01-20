@@ -1,0 +1,85 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Повідомлення - Студія{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1 class="admin-title">Повідомлення</h1>
+</div>
+
+<div class="admin-card">
+    {% if messages %}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Картина</th>
+                <th>Повідомлення</th>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <tr id="msg-{{ msg.id }}">
+                <td><strong>{{ msg.name }}</strong></td>
+                <td><a href="mailto:{{ msg.email }}" style="color: var(--sea-medium);">{{ msg.email }}</a></td>
+                <td>{{ msg.phone or '—' }}</td>
+                <td>
+                    {% if msg.painting %}
+                    <a href="{{ url_for('painting_detail', painting_id=msg.painting.id) }}" target="_blank" style="color: var(--sea-medium);">
+                        {{ msg.painting.title_uk }}
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td style="max-width: 300px;">
+                    <div style="white-space: pre-wrap; font-size: 0.875rem;">{{ msg.message or '—' }}</div>
+                </td>
+                <td style="white-space: nowrap;">{{ msg.created_at.strftime('%d.%m.%Y') }}<br><small style="color: var(--ink-light);">{{ msg.created_at.strftime('%H:%M') }}</small></td>
+                <td>
+                    {% if msg.is_read %}
+                    <span class="badge badge-success">Прочитано</span>
+                    {% else %}
+                    <span class="badge badge-warning" id="badge-{{ msg.id }}">Нове</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="admin-actions">
+                        {% if not msg.is_read %}
+                        <button onclick="markRead({{ msg.id }})" class="btn-edit" style="background: none; border: none; cursor: pointer;">Прочитано</button>
+                        {% endif %}
+                        <form action="{{ url_for('admin_delete_message', message_id=msg.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Видалити це повідомлення?');">
+                            <button type="submit" class="btn-delete" style="background: none; border: none; cursor: pointer;">Видалити</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--ink-light); text-align: center; padding: var(--space-2xl);">
+        Поки немає повідомлень
+    </p>
+    {% endif %}
+</div>
+
+<script>
+function markRead(id) {
+    fetch('/studio/messages/mark-read/' + id, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const badge = document.getElementById('badge-' + id);
+                badge.className = 'badge badge-success';
+                badge.textContent = 'Прочитано';
+            }
+        });
+}
+</script>
+{% endblock %}

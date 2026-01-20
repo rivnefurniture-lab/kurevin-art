@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Студія{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --admin-sidebar: 260px;
+        }
+        
+        body {
+            background: var(--canvas-cream);
+        }
+        
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: var(--admin-sidebar);
+            background: var(--sea-deep);
+            color: var(--canvas-white);
+            padding: var(--space-xl);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
+        
+        .admin-logo {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: var(--space-2xl);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .admin-logo span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--sea-light);
+            font-family: var(--font-body);
+            margin-top: var(--space-xs);
+        }
+        
+        .admin-nav {
+            list-style: none;
+        }
+        
+        .admin-nav li {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            color: rgba(255,255,255,0.7);
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+            font-size: 0.9375rem;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--canvas-white);
+        }
+        
+        .admin-nav svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+        
+        .admin-nav a:hover svg,
+        .admin-nav a.active svg {
+            opacity: 1;
+        }
+        
+        .admin-nav-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: var(--space-lg) 0;
+        }
+        
+        .admin-content {
+            flex: 1;
+            margin-left: var(--admin-sidebar);
+            padding: var(--space-2xl);
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .admin-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--sea-deep);
+        }
+        
+        .admin-card {
+            background: var(--canvas-white);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .admin-card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--sea-deep);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--ink-faint);
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .admin-stat {
+            background: var(--canvas-white);
+            padding: var(--space-xl);
+            text-align: center;
+        }
+        
+        .admin-stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--sea-dark);
+        }
+        
+        .admin-stat-label {
+            font-size: 0.875rem;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: var(--space-md);
+            text-align: left;
+            border-bottom: 1px solid var(--ink-faint);
+        }
+        
+        .admin-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink-light);
+            font-weight: 500;
+        }
+        
+        .admin-table tr:hover {
+            background: var(--canvas-cream);
+        }
+        
+        .admin-table img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .btn-edit {
+            color: var(--sea-medium);
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.8125rem;
+        }
+        
+        .btn-delete {
+            color: #ef4444;
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.8125rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 2px;
+        }
+        
+        .badge-success {
+            background: var(--sea-mist);
+            color: var(--sea-dark);
+        }
+        
+        .badge-warning {
+            background: var(--sun-light);
+            color: var(--ink-medium);
+        }
+        
+        .badge-danger {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+        
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 200px;
+            }
+            .admin-content {
+                margin-left: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                position: relative;
+                width: 100%;
+            }
+            .admin-content {
+                margin-left: 0;
+            }
+            .admin-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                Студія
+                <span>Панель керування</span>
+            </div>
+            
+            <ul class="admin-nav">
+                <li>
+                    <a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="9"/>
+                            <rect x="14" y="3" width="7" height="5"/>
+                            <rect x="14" y="12" width="7" height="9"/>
+                            <rect x="3" y="16" width="7" height="5"/>
+                        </svg>
+                        Дашборд
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_paintings') }}" class="{% if request.endpoint in ['admin_paintings', 'admin_add_painting', 'admin_edit_painting'] %}active{% endif %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="M21 15l-5-5L5 21"/>
+                        </svg>
+                        Картини
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_messages') }}" class="{% if request.endpoint == 'admin_messages' %}active{% endif %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        Повідомлення
+                    </a>
+                </li>
+                
+                <div class="admin-nav-divider"></div>
+                
+                <li>
+                    <a href="{{ url_for('home') }}" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Переглянути сайт
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_logout') }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Вийти
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <main class="admin-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

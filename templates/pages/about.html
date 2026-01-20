@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t.nav_about }} - {{ t.site_title }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ t.about_title }}</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80" alt="Artist at work">
+            </div>
+            <div class="about-text">
+                {% if lang == 'uk' %}
+                <h2>Олексій Куревін</h2>
+                <p>Олексій Юрійович Куревін — український художник-імпресіоніст, майстер пейзажу та міського жанру. Народився та виріс в Одесі — місті, яке стало головним джерелом натхнення для його творчості.</p>
+                <p>Художник працює в техніці олійного живопису, створюючи роботи, наповнені світлом, кольором та особливою атмосферою південного міста. Його картини — це не просто зображення, а емоційні історії, розказані пензлем.</p>
+                <p>Роботи Олексія Куревіна знаходяться в приватних колекціях України, Європи та США. Художник регулярно бере участь у виставках та пленерах.</p>
+                {% elif lang == 'en' %}
+                <h2>Alexey Kurevin</h2>
+                <p>Alexey Yuryevich Kurevin is a Ukrainian impressionist artist, master of landscape and urban genre. He was born and raised in Odessa — a city that became the main source of inspiration for his work.</p>
+                <p>The artist works in oil painting technique, creating works filled with light, color, and the special atmosphere of a southern city. His paintings are not just images, but emotional stories told with a brush.</p>
+                <p>Alexey Kurevin's works are in private collections in Ukraine, Europe, and the USA. The artist regularly participates in exhibitions and plein air events.</p>
+                {% else %}
+                <h2>Алексей Куревин</h2>
+                <p>Алексей Юрьевич Куревин — украинский художник-импрессионист, мастер пейзажа и городского жанра. Родился и вырос в Одессе — городе, который стал главным источником вдохновения для его творчества.</p>
+                <p>Художник работает в технике масляной живописи, создавая работы, наполненные светом, цветом и особой атмосферой южного города. Его картины — это не просто изображения, а эмоциональные истории, рассказанные кистью.</p>
+                <p>Работы Алексея Куревина находятся в частных коллекциях Украины, Европы и США. Художник регулярно участвует в выставках и пленэрах.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--canvas-cream);">
+    <div class="container container-narrow text-center">
+        {% if lang == 'uk' %}
+        <h2>Творчий шлях</h2>
+        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Імпресіонізм для мене — це спосіб передати не просто те, що бачу, а те, що відчуваю. Кожен мазок — це емоція, кожен колір — настрій моменту.</p>
+        {% elif lang == 'en' %}
+        <h2>Creative Path</h2>
+        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Impressionism for me is a way to convey not just what I see, but what I feel. Every brushstroke is an emotion, every color is the mood of the moment.</p>
+        {% else %}
+        <h2>Творческий путь</h2>
+        <p style="color: var(--ink-medium); margin-bottom: var(--space-xl);">Импрессионизм для меня — это способ передать не просто то, что вижу, а то, что чувствую. Каждый мазок — это эмоция, каждый цвет — настроение момента.</p>
+        {% endif %}
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); margin-top: var(--space-2xl);">
+            <div>
+                <div style="font-family: var(--font-display); font-size: 3rem; color: var(--sea-dark);">15+</div>
+                <div style="color: var(--ink-light); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em;">{{ 'років досвіду' if lang == 'uk' else ('years of experience' if lang == 'en' else 'лет опыта') }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--font-display); font-size: 3rem; color: var(--sea-dark);">200+</div>
+                <div style="color: var(--ink-light); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em;">{{ 'робіт' if lang == 'uk' else ('artworks' if lang == 'en' else 'работ') }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--font-display); font-size: 3rem; color: var(--sea-dark);">50+</div>
+                <div style="color: var(--ink-light); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em;">{{ 'виставок' if lang == 'uk' else ('exhibitions' if lang == 'en' else 'выставок') }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--sea-deep); color: var(--canvas-white); text-align: center;">
+    <div class="container container-narrow">
+        <h2 style="color: var(--canvas-white); margin-bottom: var(--space-lg);">{{ t.contact_title }}</h2>
+        <p style="color: var(--sea-foam); margin-bottom: var(--space-xl);">{{ t.contact_subtitle }}</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline" style="color: white; border-color: white;">{{ t.contact_artist }}</a>
+    </div>
+</section>
+{% endblock %}

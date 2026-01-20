@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ t.site_title }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ t.site_title }} - {{ t.hero_subtitle }}{% endblock %}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="{{ url_for('home') }}" class="logo">
+                    <span>{{ t.site_title.split()[0] if lang == 'uk' else 'Impressionism' }}</span>
+                    <span class="logo-sub">{{ 'Олексій Куревін' if lang == 'uk' else ('Alexey Kurevin' if lang == 'en' else 'Алексей Куревин') }}</span>
+                </a>
+                
+                <nav class="nav">
+                    <ul class="nav-links">
+                        <li><a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">{{ t.nav_home }}</a></li>
+                        <li><a href="{{ url_for('gallery') }}" class="nav-link {% if request.endpoint in ['gallery', 'painting_detail'] %}active{% endif %}">{{ t.nav_gallery }}</a></li>
+                        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">{{ t.nav_about }}</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">{{ t.nav_contact }}</a></li>
+                    </ul>
+                    
+                    <div class="lang-switch">
+                        <a href="{{ url_for('set_lang', lang='uk') }}" class="{% if lang == 'uk' %}active{% endif %}">UA</a>
+                        <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">EN</a>
+                        <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+                    </div>
+                    
+                    <button class="mobile-toggle" id="mobileToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}" class="nav-link">{{ t.nav_home }}</a></li>
+            <li><a href="{{ url_for('gallery') }}" class="nav-link">{{ t.nav_gallery }}</a></li>
+            <li><a href="{{ url_for('about') }}" class="nav-link">{{ t.nav_about }}</a></li>
+            <li><a href="{{ url_for('contact') }}" class="nav-link">{{ t.nav_contact }}</a></li>
+        </ul>
+        <div class="lang-switch">
+            <a href="{{ url_for('set_lang', lang='uk') }}" class="{% if lang == 'uk' %}active{% endif %}">UA</a>
+            <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">EN</a>
+            <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container" style="padding-top: 100px;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">{{ t.site_title }}</div>
+                <nav class="footer-nav">
+                    <a href="{{ url_for('home') }}">{{ t.nav_home }}</a>
+                    <a href="{{ url_for('gallery') }}">{{ t.nav_gallery }}</a>
+                    <a href="{{ url_for('about') }}">{{ t.nav_about }}</a>
+                    <a href="{{ url_for('contact') }}">{{ t.nav_contact }}</a>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ current_year }} {{ 'Олексій Куревін' if lang == 'uk' else ('Alexey Kurevin' if lang == 'en' else 'Алексей Куревин') }}</p>
+                <div class="footer-lang">
+                    <a href="{{ url_for('set_lang', lang='uk') }}" class="{% if lang == 'uk' %}active{% endif %}">Українська</a>
+                    <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">English</a>
+                    <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">Русский</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

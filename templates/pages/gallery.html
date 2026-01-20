@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t.nav_gallery }} - {{ t.site_title }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ t.nav_gallery }}</h1>
+        <p>{{ t.hero_subtitle }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <!-- Filters -->
+        <div class="gallery-filters">
+            <a href="{{ url_for('gallery') }}" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">{{ t.all_paintings }}</a>
+            <a href="{{ url_for('gallery', filter='available') }}" class="filter-btn {% if current_filter == 'available' %}active{% endif %}">{{ t.filter_available }}</a>
+            <a href="{{ url_for('gallery', filter='sold') }}" class="filter-btn {% if current_filter == 'sold' %}active{% endif %}">{{ t.filter_sold }}</a>
+        </div>
+        
+        <!-- Gallery Grid -->
+        {% if paintings %}
+        <div class="gallery-grid">
+            {% for painting in paintings %}
+            <article class="painting-card">
+                <a href="{{ url_for('painting_detail', painting_id=painting.id) }}">
+                    <div class="painting-card-image">
+                        {% if painting.image %}
+                        <img src="{{ url_for('static', filename='images/paintings/' + painting.image) }}" alt="{{ painting.get_title(lang) }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80" alt="{{ painting.get_title(lang) }}">
+                        {% endif %}
+                        <div class="painting-card-overlay">
+                            <span class="btn btn-outline" style="color: white; border-color: white;">{{ t.inquire if not painting.is_sold else t.sold }}</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="painting-card-body">
+                    <h3 class="painting-card-title">
+                        <a href="{{ url_for('painting_detail', painting_id=painting.id) }}">{{ painting.get_title(lang) }}</a>
+                    </h3>
+                    <div class="painting-card-meta">
+                        {% if painting.get_size_display() %}
+                        <span>{{ painting.get_size_display() }}</span>
+                        {% endif %}
+                        {% if painting.year %}
+                        <span>{{ painting.year }}</span>
+                        {% endif %}
+                        {% if painting.get_technique(lang) %}
+                        <span>{{ painting.get_technique(lang) }}</span>
+                        {% endif %}
+                    </div>
+                    {% if painting.price and not painting.is_sold %}
+                    <div class="painting-card-price">${{ painting.price|int }}</div>
+                    {% endif %}
+                    {% if painting.is_sold %}
+                    <span class="painting-card-status status-sold">{{ t.sold }}</span>
+                    {% else %}
+                    <span class="painting-card-status status-available">{{ t.available }}</span>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center" style="padding: var(--space-4xl) 0;">
+            <p class="text-light">{{ 'Картини скоро з\'являться' if lang == 'uk' else ('Paintings coming soon' if lang == 'en' else 'Картины скоро появятся') }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

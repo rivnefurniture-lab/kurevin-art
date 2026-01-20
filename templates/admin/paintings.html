@@ -1,0 +1,69 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Картини - Студія{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1 class="admin-title">Картини</h1>
+    <a href="{{ url_for('admin_add_painting') }}" class="btn btn-primary">Додати картину</a>
+</div>
+
+<div class="admin-card">
+    {% if paintings %}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Зображення</th>
+                <th>Назва</th>
+                <th>Розмір</th>
+                <th>Рік</th>
+                <th>Ціна</th>
+                <th>Статус</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for painting in paintings %}
+            <tr>
+                <td>
+                    {% if painting.image %}
+                    <img src="{{ url_for('static', filename='images/paintings/' + painting.image) }}" alt="{{ painting.title_uk }}">
+                    {% else %}
+                    <div style="width: 60px; height: 60px; background: var(--canvas-cream);"></div>
+                    {% endif %}
+                </td>
+                <td>
+                    <strong>{{ painting.title_uk }}</strong>
+                    {% if painting.is_featured %}
+                    <span class="badge badge-success" style="margin-left: var(--space-sm);">Featured</span>
+                    {% endif %}
+                </td>
+                <td>{{ painting.get_size_display() or '—' }}</td>
+                <td>{{ painting.year or '—' }}</td>
+                <td>{{ '$' + painting.price|int|string if painting.price else '—' }}</td>
+                <td>
+                    {% if painting.is_sold %}
+                    <span class="badge badge-warning">Продано</span>
+                    {% else %}
+                    <span class="badge badge-success">Доступна</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="admin-actions">
+                        <a href="{{ url_for('admin_edit_painting', painting_id=painting.id) }}" class="btn-edit">Редагувати</a>
+                        <form action="{{ url_for('admin_delete_painting', painting_id=painting.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Видалити цю картину?');">
+                            <button type="submit" class="btn-delete" style="background: none; border: none; cursor: pointer;">Видалити</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--ink-light); text-align: center; padding: var(--space-2xl);">
+        Поки немає картин. <a href="{{ url_for('admin_add_painting') }}" style="color: var(--sea-medium);">Додати першу картину</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

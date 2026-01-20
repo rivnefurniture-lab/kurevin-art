@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ painting.get_title(lang) }} - {{ t.site_title }}{% endblock %}
+
+{% block content %}
+<section class="painting-detail">
+    <div class="container">
+        <nav class="breadcrumb" style="justify-content: flex-start; margin-bottom: var(--space-xl);">
+            <a href="{{ url_for('home') }}">{{ t.nav_home }}</a>
+            <span>/</span>
+            <a href="{{ url_for('gallery') }}">{{ t.nav_gallery }}</a>
+            <span>/</span>
+            <span>{{ painting.get_title(lang) }}</span>
+        </nav>
+        
+        <div class="painting-detail-grid">
+            <div class="painting-image-main">
+                {% if painting.image %}
+                <img src="{{ url_for('static', filename='images/paintings/' + painting.image) }}" alt="{{ painting.get_title(lang) }}">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200&q=80" alt="{{ painting.get_title(lang) }}">
+                {% endif %}
+            </div>
+            
+            <div class="painting-info">
+                <h1 class="painting-title">{{ painting.get_title(lang) }}</h1>
+                
+                {% if painting.get_description(lang) %}
+                <p class="painting-description">{{ painting.get_description(lang) }}</p>
+                {% endif %}
+                
+                <div class="painting-specs">
+                    {% if painting.get_technique(lang) %}
+                    <div class="painting-spec">
+                        <span class="painting-spec-label">{{ t.technique }}</span>
+                        <span class="painting-spec-value">{{ painting.get_technique(lang) }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if painting.get_size_display() %}
+                    <div class="painting-spec">
+                        <span class="painting-spec-label">{{ t.size }}</span>
+                        <span class="painting-spec-value">{{ painting.get_size_display() }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if painting.year %}
+                    <div class="painting-spec">
+                        <span class="painting-spec-label">{{ t.year }}</span>
+                        <span class="painting-spec-value">{{ painting.year }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if painting.is_sold %}
+                <div style="margin-bottom: var(--space-xl);">
+                    <span class="painting-card-status status-sold" style="font-size: 0.875rem;">{{ t.sold }}</span>
+                </div>
+                {% else %}
+                    {% if painting.price %}
+                    <div class="painting-price-large">${{ painting.price|int }}</div>
+                    {% endif %}
+                {% endif %}
+                
+                <div class="painting-actions">
+                    {% if not painting.is_sold %}
+                    <a href="{{ url_for('contact', painting=painting.id) }}" class="btn btn-primary btn-lg">{{ t.inquire }}</a>
+                    {% endif %}
+                    <a href="https://t.me/{{ config.get('CONTACT_TELEGRAM', 'kurevin_art') }}?text={{ (t.interested_in + ': ' + painting.get_title(lang))|urlencode }}" target="_blank" class="btn btn-outline">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.751-.244-1.349-.374-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.33.015.097.034.318.019.49z"/>
+                        </svg>
+                        Telegram
+                    </a>
+                </div>
+                
+                <div style="margin-top: var(--space-2xl);">
+                    <a href="{{ url_for('gallery') }}" class="btn btn-ghost">← {{ t.back_to_gallery }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if other_paintings %}
+<section class="related-paintings">
+    <div class="container">
+        <h2 class="text-center mb-4">{{ t.all_works }}</h2>
+        <div class="gallery-grid">
+            {% for p in other_paintings %}
+            <article class="painting-card">
+                <a href="{{ url_for('painting_detail', painting_id=p.id) }}">
+                    <div class="painting-card-image">
+                        {% if p.image %}
+                        <img src="{{ url_for('static', filename='images/paintings/' + p.image) }}" alt="{{ p.get_title(lang) }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80" alt="{{ p.get_title(lang) }}">
+                        {% endif %}
+                    </div>
+                </a>
+                <div class="painting-card-body">
+                    <h3 class="painting-card-title">
+                        <a href="{{ url_for('painting_detail', painting_id=p.id) }}">{{ p.get_title(lang) }}</a>
+                    </h3>
+                    <div class="painting-card-meta">
+                        {% if p.get_size_display() %}
+                        <span>{{ p.get_size_display() }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

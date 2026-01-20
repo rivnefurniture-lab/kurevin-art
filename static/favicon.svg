@@ -1,11 +1,15 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background circle -->
-  <circle cx="32" cy="32" r="30" fill="#1a3a4a"/>
+  <!-- Background circle - морська хвиля -->
+  <circle cx="32" cy="32" r="30" fill="#3d9db5"/>
   
-  <!-- Brush stroke effect -->
-  <path d="M 15 35 Q 20 28, 28 30 T 45 28" stroke="#7bc4d4" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
-  <path d="M 18 42 Q 25 38, 32 40 T 48 38" stroke="#d4a574" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <!-- Wave effect - lighter sea wave -->
+  <path d="M 10 35 Q 16 28, 22 32 T 34 28 T 46 32 T 54 28" stroke="#5eb5cc" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M 12 42 Q 20 38, 28 41 T 44 38 T 52 40" stroke="#7bc4d4" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M 15 48 Q 22 45, 30 47 T 46 45 T 52 47" stroke="#b8e4ec" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/>
   
   <!-- Stylized "K" for Kurevin -->
-  <path d="M 25 20 L 25 44 M 25 30 L 38 20 M 25 32 L 38 44" stroke="#e8f4f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 24 18 L 24 46 M 24 30 L 40 18 M 24 32 L 40 46" stroke="#e8f4f6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Golden accent -->
+  <circle cx="42" cy="24" r="2" fill="#d4a574" opacity="0.8"/>
 </svg>

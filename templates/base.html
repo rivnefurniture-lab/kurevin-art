@@ -43,19 +43,23 @@
                         <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">EN</a>
                         <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
                     </div>
-                    
-                    <button class="mobile-toggle" id="mobileToggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
                 </nav>
+                
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </header>
     
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose" aria-label="Close menu">
+            <span></span>
+            <span></span>
+        </button>
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}" class="nav-link">{{ t.nav_home }}</a></li>
             <li><a href="{{ url_for('gallery') }}" class="nav-link">{{ t.nav_gallery }}</a></li>
@@ -63,9 +67,9 @@
             <li><a href="{{ url_for('contact') }}" class="nav-link">{{ t.nav_contact }}</a></li>
         </ul>
         <div class="lang-switch">
-            <a href="{{ url_for('set_lang', lang='uk') }}" class="{% if lang == 'uk' %}active{% endif %}">UA</a>
-            <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">EN</a>
-            <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+            <a href="{{ url_for('set_lang', lang='uk') }}" class="{% if lang == 'uk' %}active{% endif %}">Українська</a>
+            <a href="{{ url_for('set_lang', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">English</a>
+            <a href="{{ url_for('set_lang', lang='ru') }}" class="{% if lang == 'ru' %}active{% endif %}">Русский</a>
         </div>
     </div>
 
@@ -122,15 +126,33 @@
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+        const body = document.body;
         
-        mobileToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('active');
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            body.style.overflow = '';
+        }
+        
+        mobileToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            openMobileMenu();
+        });
+        
+        mobileClose.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeMobileMenu();
         });
         
         // Close mobile menu on link click
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
+                closeMobileMenu();
             });
         });
     </script>

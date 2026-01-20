@@ -600,15 +600,16 @@ p {
 }
 
 .painting-card-body {
-    padding: var(--space-lg) 0;
+    padding: var(--space-xl) var(--space-lg);
 }
 
 .painting-card-title {
     font-family: var(--font-display);
     font-size: 1.25rem;
     color: var(--sea-deep);
-    margin-bottom: var(--space-xs);
+    margin-bottom: var(--space-sm);
     font-weight: 400;
+    line-height: 1.3;
 }
 
 .painting-card-meta {
@@ -617,22 +618,25 @@ p {
     display: flex;
     gap: var(--space-md);
     flex-wrap: wrap;
+    margin-bottom: var(--space-sm);
 }
 
 .painting-card-price {
     font-family: var(--font-display);
-    font-size: 1.125rem;
-    color: var(--sea-dark);
-    margin-top: var(--space-sm);
+    font-size: 1.25rem;
+    color: var(--sea-wave);
+    font-weight: 500;
+    margin-top: var(--space-xs);
 }
 
 .painting-card-status {
     display: inline-block;
-    padding: var(--space-xs) var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
     font-size: 0.6875rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-top: var(--space-sm);
+    margin-top: var(--space-md);
+    border-radius: 2px;
 }
 
 .status-available {

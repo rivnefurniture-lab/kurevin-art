@@ -180,6 +180,17 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-xl);
+}
+
+.header-inner > .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+}
+
+.header-inner > .mobile-toggle {
+    margin-left: auto;
 }
 
 .logo {
@@ -1048,7 +1059,7 @@ textarea.form-control {
         --space-3xl: 3rem;
     }
 
-    .nav-links {
+    .nav .nav-links {
         display: none;
     }
 
@@ -1058,6 +1069,10 @@ textarea.form-control {
 
     .mobile-toggle {
         display: flex;
+    }
+    
+    .mobile-menu .nav-links {
+        display: flex !important;
     }
     
     .gallery-grid {
